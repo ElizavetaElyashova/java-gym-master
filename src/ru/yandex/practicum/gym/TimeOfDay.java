@@ -1,5 +1,6 @@
 package ru.yandex.practicum.gym;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class TimeOfDay implements Comparable<TimeOfDay> {
@@ -31,6 +32,11 @@ public class TimeOfDay implements Comparable<TimeOfDay> {
     @Override
     public int hashCode() {
         return Objects.hash(hours, minutes);
+    }
+
+    @Override
+    public String toString() {
+        return hours + ":" + new DecimalFormat("00").format(minutes);
     }
 
     public int getHours() {

@@ -10,11 +10,14 @@ public class Coach {
     private String name;
     //отчество
     private String middleName;
+    //количество тренировок, апдейтится при добавлении новой тренировки в классе Timetable
+    private Integer numberOfTrainingSessions;
 
     public Coach(String surname, String name, String middleName) {
         this.surname = surname;
         this.name = name;
         this.middleName = middleName;
+        numberOfTrainingSessions = 0;
     }
 
     @Override
@@ -30,6 +33,11 @@ public class Coach {
         return Objects.hash(surname, name, middleName);
     }
 
+    @Override
+    public String toString() {
+        return "Тренер: " + surname + ' ' + name + ' ' + middleName;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -40,5 +48,13 @@ public class Coach {
 
     public String getMiddleName() {
         return middleName;
+    }
+
+    public Integer getNumberOfTrainingSessions() {
+        return numberOfTrainingSessions;
+    }
+
+    public void setNumberOfTrainingSessions(Integer numberOfTrainingSessions) {
+        this.numberOfTrainingSessions = numberOfTrainingSessions;
     }
 }
