@@ -64,8 +64,6 @@ public class Timetable {
 
     public TreeMap<Coach, Integer> getCountByCoaches() {
         TreeMap<Coach, Integer> sorted = new TreeMap<>(new CoachTrainingsComparator().reversed());
-        System.out.println();
-        System.out.println(sorted);
         sorted.putAll(countByCoaches);
         return sorted;
     }
