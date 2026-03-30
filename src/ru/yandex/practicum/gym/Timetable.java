@@ -19,33 +19,24 @@ public class Timetable {
     }
 
     public void addNewTrainingSession(TrainingSession trainingSession) {
-        DayOfWeek day = trainingSession.getDayOfWeek();
-        TimeOfDay time = trainingSession.getTimeOfDay();
-        TreeMap<TimeOfDay, Set<TrainingSession>> trainingSessionsByDay = new TreeMap<>();
-        Set<TrainingSession> trainingSessionsByTime = new HashSet<>();
-        //проверяем, есть ли записи по ключу day в расписании
-        if (timetable.containsKey(day)) {
-            //получаем записи по ключу day, сохраняем в переменную
-            trainingSessionsByDay = timetable.get(day);
-            //проверяем, есть ли записи по ключу time
-            if (trainingSessionsByDay.containsKey(time)) {
-                //получаем записи по ключу time, сохраняем в переменную
-                trainingSessionsByTime = trainingSessionsByDay.get(time);
+        if (trainingSession != null) {
+            DayOfWeek day = trainingSession.getDayOfWeek();
+            TimeOfDay time = trainingSession.getTimeOfDay();
+            TreeMap<TimeOfDay, Set<TrainingSession>> trainingSessionsByDay = new TreeMap<>();
+            Set<TrainingSession> trainingSessionsByTime = new HashSet<>();
+            if (timetable.containsKey(day)) {
+                trainingSessionsByDay = timetable.get(day);
+                if (trainingSessionsByDay.containsKey(time)) {
+                    trainingSessionsByTime = trainingSessionsByDay.get(time);
+                } else {
+                    trainingSessionsByDay.put(time, trainingSessionsByTime);
+                }
             } else {
-                //записей по ключу time нет, создаем запись с ключом time и пустым сетом
+                timetable.put(day, trainingSessionsByDay);
                 trainingSessionsByDay.put(time, trainingSessionsByTime);
             }
-        } else {
-            //записей по ключу day нет, создаем запись в timetable с ключом day и пустой мапой
-            timetable.put(day, trainingSessionsByDay);
-            //в мапе создаем запись с ключом time и пустым сетом
-            trainingSessionsByDay.put(time, trainingSessionsByTime);
-        }
-        if (trainingSession != null) {
-            //добавляем тренировку в сет
             if (trainingSessionsByTime.add(trainingSession)) {
                 System.out.println("Тренировка успешно добавлена.");
-                //апдейтим счетчик тренировок у тренера этой тренировки
                 addNewTrainingSessionForCoach(trainingSession.getCoach());
             } else {
                 System.out.println("Такая тренировка уже есть в расписании.");
@@ -63,7 +54,12 @@ public class Timetable {
     }
 
     public Set<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
-        return timetable.get(dayOfWeek).get(timeOfDay);
+        if (timetable.get(dayOfWeek) == null) {
+            System.out.println("В этот день тренировок нет.");
+            return null;
+        } else {
+            return timetable.get(dayOfWeek).get(timeOfDay);
+        }
     }
 
     public TreeMap<Coach, Integer> getCountByCoaches() {
