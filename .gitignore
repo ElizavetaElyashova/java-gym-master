@@ -37,3 +37,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/ru/yandex/practicum/gym/Main.java
